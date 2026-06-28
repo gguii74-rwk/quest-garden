@@ -115,9 +115,18 @@ export function ParentDashboard({ game }: Props) {
           <Plus size={22} weight="bold" />
           {game.addingPiano ? "피아노 추가 중" : "피아노 미션 추가"}
         </button>
-        <button type="button" onClick={game.resetDay}>
+        <button
+          type="button"
+          disabled={game.source === "supabase"}
+          title={
+            game.source === "supabase"
+              ? "DB 초기화는 포인트와 별 롤백까지 함께 연결해야 합니다."
+              : "오늘 상태 초기화"
+          }
+          onClick={game.resetDay}
+        >
           <CalendarCheck size={22} weight="duotone" />
-          오늘 상태 초기화
+          {game.source === "supabase" ? "초기화 준비 중" : "오늘 상태 초기화"}
         </button>
       </section>
 
