@@ -5,12 +5,22 @@
 ## 현재 자동 검증
 
 현재 저장소에는 전용 테스트 프레임워크가 없다. 코드 변경 후 기본 게이트는 다음 두 명령이다.
+오프라인 회귀 테스트는 Node 내장 test runner로 실행한다.
 
 ```powershell
 cd C:\workspace\quest-garden\web
 npm.cmd run lint
+npm.cmd run test:offline
 npm.cmd run build
 ```
+
+`test:offline`은 실제 Supabase 연결 없이 다음 불변식을 확인한다.
+
+- 승인 RPC가 `security invoker`이고 public execute 권한이 없다.
+- 미션 승인은 `submitted` 상태만 처리하고 원장과 자녀 누적 수치를 갱신한다.
+- `point_transactions` insert 정책이 부모 소유 자녀에만 허용된다.
+- 보상 요청은 조건 충족과 중복 요청 방지를 확인한다.
+- `.env.example`에 service role key를 요구하지 않는다.
 
 UI 변경 후에는 개발 서버를 띄우고 핵심 라우트를 확인한다.
 
@@ -25,7 +35,7 @@ npm.cmd run dev
 - `/login`
 - `/onboarding`
 
-## Server Action 통합 테스트 우선순위
+## Supabase 통합 테스트 우선순위
 
 Supabase 환경이 연결되면 다음 순서로 통합 테스트를 추가한다.
 

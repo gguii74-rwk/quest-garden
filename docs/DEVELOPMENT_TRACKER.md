@@ -39,12 +39,13 @@ Quest Garden은 현재 Supabase Auth/DB 기반 핵심 루프가 코드로 연결
 - 스티커 상태를 DB 로딩값과 현재 미션/책장/보상 상태에서 계산
 - Supabase Data API용 `authenticated` role grant migration 추가
 - `<img>`를 `next/image`로 교체해 lint warning 제거
-- Server Action 테스트 전략 문서와 Supabase 보안 리뷰 문서 추가
+- Server Action 오프라인 회귀 테스트, 테스트 전략 문서, Supabase 보안 리뷰 문서 추가
 
 최근 검증:
 
 - `cd web; npm.cmd run build`: 통과
 - `cd web; npm.cmd run lint`: 통과
+- `cd web; npm.cmd run test:offline`: 통과, 5개 테스트
 - lint warning: 0개
 - dev server: `http://127.0.0.1:3000`
 - `/`, `/login`, `/onboarding`: HTTP 200 확인
@@ -76,7 +77,7 @@ Quest Garden은 현재 Supabase Auth/DB 기반 핵심 루프가 코드로 연결
 | 부모 승인 | 구현 완료 | 실제 Supabase에서 원장/중복 승인 검증 |
 | 보상 요청 | 구현 완료 | 실제 Supabase에서 요청 유지 검증 |
 | 읽기 기록 | 구현 완료 | 실제 Supabase에서 책 추가 유지 검증 |
-| 테스트 | 전략 추가 | Supabase 테스트 프로젝트 연결 후 자동화 |
+| 테스트 | 오프라인 회귀 테스트 추가 | Supabase 테스트 프로젝트 연결 후 E2E 자동화 |
 | 이미지 최적화 | 완료 | 유지 |
 
 ## 다음 마일스톤
@@ -213,7 +214,7 @@ Quest Garden은 현재 Supabase Auth/DB 기반 핵심 루프가 코드로 연결
 작업:
 
 - [x] `<img>`를 `next/image`로 교체해 lint warning 제거
-- [x] 주요 Server Action 단위 테스트 또는 통합 테스트 전략 추가: `docs/TEST_STRATEGY.md`
+- [x] 주요 Server Action 단위 테스트 또는 통합 테스트 전략 추가: `npm.cmd run test:offline`, `docs/TEST_STRATEGY.md`
 - [x] 빈 상태, 에러 상태, 로딩 상태 보강
 - [x] Supabase Data API 노출 설정 확인: migration role grant 추가
 - [x] RLS 정책 advisor 또는 수동 보안 리뷰: `docs/SUPABASE_SECURITY_REVIEW.md`
@@ -223,6 +224,7 @@ Quest Garden은 현재 Supabase Auth/DB 기반 핵심 루프가 코드로 연결
 완료 기준:
 
 - `npm.cmd run lint` warning 0
+- `npm.cmd run test:offline` 통과
 - `npm.cmd run build` 통과
 - 신규 가입부터 미션 승인까지 브라우저에서 end-to-end 확인
 - 신규 가입부터 미션 승인까지의 실제 Supabase E2E는 `.env.local` 준비 후 수행
@@ -279,6 +281,7 @@ npm.cmd run dev
 ```powershell
 cd C:\workspace\quest-garden\web
 npm.cmd run lint
+npm.cmd run test:offline
 npm.cmd run build
 ```
 

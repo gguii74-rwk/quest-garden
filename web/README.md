@@ -49,10 +49,11 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=
 
 ```bash
 npm.cmd run lint
+npm.cmd run test:offline
 npm.cmd run build
 ```
 
-현재 `web/.env.local`이 없으면 실제 Supabase 저장 흐름은 검증할 수 없고 mock fallback으로 렌더링됩니다.
+`test:offline`은 migration과 Server Action의 핵심 불변식을 DB 연결 없이 확인합니다. 현재 `web/.env.local`이 없으면 실제 Supabase 저장 흐름은 검증할 수 없고 mock fallback으로 렌더링됩니다.
 
 ## 다음 구현 순서
 

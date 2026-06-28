@@ -58,6 +58,7 @@ npm.cmd run build
 마지막 확인 결과:
 
 - `npm.cmd run lint` 통과, warning 0
+- `npm.cmd run test:offline` 통과, 5개 테스트
 - `npm.cmd run build` 통과
 - `http://127.0.0.1:3000`, `/login`, `/onboarding` 응답 `200`
 - `npm.cmd run start` production 서버에서 `/`, `/login`, `/onboarding` 응답 `200`
@@ -196,6 +197,7 @@ C:\Program Files\Google\Chrome\Application\chrome.exe
 ```powershell
 cd C:\workspace\quest-garden\web
 npm.cmd run lint
+npm.cmd run test:offline
 npm.cmd run build
 ```
 
