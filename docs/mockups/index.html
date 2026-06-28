@@ -1,0 +1,565 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Quest Garden 목업 비교</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #2f2418;
+        --muted: #7a6b58;
+        --line: #eadbc2;
+        --paper: #fff9ed;
+        --surface: #ffffff;
+        --green: #3f9e63;
+        --teal: #2f9d9b;
+        --yellow: #f7bf2f;
+        --coral: #ef746f;
+        --blue: #4c9fe8;
+        --shadow: 0 18px 55px rgba(104, 72, 34, 0.15);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background:
+          radial-gradient(circle at 12% 10%, rgba(247, 191, 47, 0.22), transparent 28rem),
+          radial-gradient(circle at 88% 12%, rgba(47, 157, 155, 0.18), transparent 24rem),
+          linear-gradient(180deg, #fffaf0 0%, #edf8ef 100%);
+        color: var(--ink);
+        font-family:
+          "Pretendard",
+          "Apple SD Gothic Neo",
+          "Malgun Gothic",
+          system-ui,
+          sans-serif;
+      }
+
+      button,
+      input,
+      textarea {
+        font: inherit;
+      }
+
+      .page {
+        width: min(1440px, 100%);
+        margin: 0 auto;
+        padding: 32px;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+        gap: 32px;
+        align-items: end;
+        padding: 20px 0 28px;
+      }
+
+      .eyebrow {
+        width: fit-content;
+        margin: 0 0 14px;
+        padding: 8px 12px;
+        border: 1px solid rgba(63, 158, 99, 0.28);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.78);
+        color: var(--green);
+        font-size: 14px;
+        font-weight: 800;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(34px, 5vw, 68px);
+        line-height: 1.02;
+        letter-spacing: 0;
+      }
+
+      .lead {
+        max-width: 760px;
+        margin: 18px 0 0;
+        color: var(--muted);
+        font-size: 18px;
+        line-height: 1.65;
+      }
+
+      .summary {
+        display: grid;
+        gap: 12px;
+        padding: 18px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.78);
+        box-shadow: var(--shadow);
+      }
+
+      .summary-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #f0e3cd;
+      }
+
+      .summary-row:last-child {
+        padding-bottom: 0;
+        border-bottom: 0;
+      }
+
+      .summary strong {
+        font-size: 14px;
+      }
+
+      .summary span {
+        color: var(--muted);
+        font-size: 14px;
+        text-align: right;
+      }
+
+      .toolbar {
+        position: sticky;
+        top: 0;
+        z-index: 5;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+        justify-content: space-between;
+        margin: 0 -32px 24px;
+        padding: 14px 32px;
+        border-top: 1px solid rgba(234, 219, 194, 0.72);
+        border-bottom: 1px solid rgba(234, 219, 194, 0.9);
+        background: rgba(255, 249, 237, 0.92);
+        backdrop-filter: blur(14px);
+      }
+
+      .tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .tab {
+        min-height: 44px;
+        padding: 0 16px;
+        border: 1px solid #e4d4bb;
+        border-radius: 999px;
+        background: #fffdf7;
+        color: var(--ink);
+        cursor: pointer;
+      }
+
+      .tab.is-active {
+        border-color: transparent;
+        background: var(--ink);
+        color: #fff;
+        font-weight: 800;
+      }
+
+      .hint {
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .mockup-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 22px;
+        align-items: start;
+      }
+
+      .concept {
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.92);
+        box-shadow: var(--shadow);
+      }
+
+      .concept.is-selected {
+        outline: 4px solid rgba(247, 191, 47, 0.76);
+        outline-offset: 3px;
+      }
+
+      .concept-header {
+        display: grid;
+        gap: 12px;
+        padding: 18px 18px 16px;
+      }
+
+      .title-line {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .number {
+        display: grid;
+        width: 38px;
+        height: 38px;
+        place-items: center;
+        border-radius: 999px;
+        background: #f4ead8;
+        color: var(--ink);
+        font-weight: 900;
+      }
+
+      .concept h2 {
+        margin: 0;
+        font-size: 22px;
+        letter-spacing: 0;
+      }
+
+      .badge {
+        width: fit-content;
+        padding: 6px 10px;
+        border-radius: 999px;
+        color: #fff;
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .badge.green {
+        background: var(--green);
+      }
+
+      .badge.blue {
+        background: var(--blue);
+      }
+
+      .badge.teal {
+        background: var(--teal);
+      }
+
+      .concept p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 15px;
+        line-height: 1.55;
+      }
+
+      .preview {
+        background: #f5ead8;
+      }
+
+      .preview img {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+
+      .details {
+        display: grid;
+        gap: 14px;
+        padding: 18px;
+      }
+
+      .detail-list {
+        display: grid;
+        gap: 9px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .detail-list li {
+        display: grid;
+        grid-template-columns: 92px 1fr;
+        gap: 10px;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.45;
+      }
+
+      .detail-list strong {
+        color: var(--ink);
+      }
+
+      .select-button {
+        min-height: 48px;
+        border: 0;
+        border-radius: 8px;
+        background: #f2debd;
+        color: var(--ink);
+        font-weight: 900;
+        cursor: pointer;
+      }
+
+      .concept.is-selected .select-button {
+        background: var(--yellow);
+      }
+
+      .decision {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 16px;
+        align-items: center;
+        margin-top: 24px;
+        padding: 20px;
+        border: 1px solid rgba(63, 158, 99, 0.24);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.74);
+      }
+
+      .decision h2 {
+        margin: 0 0 6px;
+        font-size: 22px;
+      }
+
+      .decision p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.55;
+      }
+
+      .pill {
+        min-width: 168px;
+        padding: 13px 18px;
+        border-radius: 999px;
+        background: var(--green);
+        color: #fff;
+        font-weight: 900;
+        text-align: center;
+      }
+
+      @media (max-width: 1120px) {
+        .mockup-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .concept {
+          display: grid;
+          grid-template-columns: minmax(300px, 0.92fr) minmax(280px, 1fr);
+        }
+
+        .concept-header,
+        .details {
+          grid-column: 2;
+        }
+
+        .preview {
+          grid-row: 1 / span 2;
+        }
+      }
+
+      @media (max-width: 760px) {
+        .page {
+          padding: 18px;
+        }
+
+        .hero {
+          grid-template-columns: 1fr;
+          gap: 18px;
+        }
+
+        .toolbar {
+          margin: 0 -18px 18px;
+          padding: 12px 18px;
+          align-items: flex-start;
+        }
+
+        .hint {
+          width: 100%;
+        }
+
+        .concept {
+          display: block;
+        }
+
+        .detail-list li {
+          grid-template-columns: 1fr;
+          gap: 3px;
+        }
+
+        .decision {
+          grid-template-columns: 1fr;
+        }
+
+        .pill {
+          min-width: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <section class="hero" aria-labelledby="page-title">
+        <div>
+          <p class="eyebrow">Quest Garden 시각 방향 목업</p>
+          <h1 id="page-title">아이 모드 첫 화면 후보</h1>
+          <p class="lead">
+            초등학교 1학년 아이가 오늘의 미션을 바로 이해하고, 완료할 때마다 정원이 자라는
+            느낌을 받을 수 있도록 세 가지 방향을 비교합니다. 현재 최종 방향은 동화 정원이며,
+            기본 캐릭터는 하얀색 페르시안 고양이입니다.
+          </p>
+        </div>
+
+        <aside class="summary" aria-label="목업 기준">
+          <div class="summary-row">
+            <strong>대상</strong>
+            <span>6~8세 아이, 부모</span>
+          </div>
+          <div class="summary-row">
+            <strong>핵심 화면</strong>
+            <span>오늘의 미션과 정원 성장</span>
+          </div>
+          <div class="summary-row">
+            <strong>스타일 조건</strong>
+            <span>귀엽고 따뜻한 밝은 게임 UI</span>
+          </div>
+          <div class="summary-row">
+            <strong>구현 목표</strong>
+            <span>완전 동작하는 Next.js 프로토타입</span>
+          </div>
+        </aside>
+      </section>
+
+      <nav class="toolbar" aria-label="목업 바로가기">
+        <div class="tabs">
+          <button class="tab is-active" type="button" data-target="concept-1">1. 동화 정원</button>
+          <button class="tab" type="button" data-target="concept-2">2. 퀘스트 맵</button>
+          <button class="tab" type="button" data-target="concept-3">3. 마법 온실</button>
+        </div>
+        <div class="hint" id="selection-hint">목업을 선택하면 구현 기준으로 표시됩니다.</div>
+      </nav>
+
+      <section class="mockup-grid" aria-label="시각 방향 비교">
+        <article class="concept is-selected" id="concept-1" data-name="동화 정원">
+          <div class="concept-header">
+            <div class="title-line">
+              <div class="number">1</div>
+              <span class="badge green">가장 직관적</span>
+            </div>
+          <h2>동화 정원</h2>
+          <p>
+              꽃, 나무, 별이 바로 보이는 고전적인 정원 성장 방식입니다. 하얀색 페르시안 고양이
+              캐릭터가 아이를 대신해 정원을 돌봅니다.
+            </p>
+          </div>
+          <div class="preview">
+            <img
+              src="assets/selected-storybook-white-persian-cat.png"
+              alt="하얀색 페르시안 고양이 캐릭터가 있는 동화 정원 방향의 Quest Garden 아이 모드 목업"
+            />
+          </div>
+          <div class="details">
+            <ul class="detail-list">
+              <li><strong>장점</strong><span>6~8세 아이에게 가장 친숙하고 설명이 적어도 이해됩니다.</span></li>
+              <li><strong>강점 화면</strong><span>오늘 미션, 보상 진행, 정원 성장</span></li>
+              <li><strong>캐릭터</strong><span>하얀색 페르시안 고양이 솜이가 정원을 돌보는 설정입니다.</span></li>
+            </ul>
+            <button class="select-button" type="button">이 방향 선택</button>
+          </div>
+        </article>
+
+        <article class="concept" id="concept-2" data-name="퀘스트 맵">
+          <div class="concept-header">
+            <div class="title-line">
+              <div class="number">2</div>
+              <span class="badge blue">가장 게임다움</span>
+            </div>
+            <h2>퀘스트 맵</h2>
+            <p>
+              섬과 경로로 미션을 보여주는 방식입니다. 체크리스트보다 모험 게임처럼 느껴지는 점이
+              가장 강합니다.
+            </p>
+          </div>
+          <div class="preview">
+            <img
+              src="assets/concept-2-quest-map.png"
+              alt="퀘스트 맵 방향의 Quest Garden 아이 모드 목업"
+            />
+          </div>
+          <div class="details">
+            <ul class="detail-list">
+              <li><strong>장점</strong><span>미션 진행 순서와 완료 상태가 게임 맵처럼 보입니다.</span></li>
+              <li><strong>강점 화면</strong><span>오늘 미션, 레벨업, 진행 경로</span></li>
+              <li><strong>주의점</strong><span>미션이 많아질 때 화면 밀도를 조심해야 합니다.</span></li>
+            </ul>
+            <button class="select-button" type="button">이 방향 선택</button>
+          </div>
+        </article>
+
+        <article class="concept" id="concept-3" data-name="마법 온실">
+          <div class="concept-header">
+            <div class="title-line">
+              <div class="number">3</div>
+              <span class="badge teal">가장 프리미엄</span>
+            </div>
+            <h2>마법 온실</h2>
+            <p>
+              온실, 아바타, 업그레이드가 함께 보이는 방향입니다. 장기 성장과 수집 요소를 확장하기
+              좋습니다.
+            </p>
+          </div>
+          <div class="preview">
+            <img
+              src="assets/concept-3-magic-greenhouse.png"
+              alt="마법 온실 방향의 Quest Garden 아이 모드 목업"
+            />
+          </div>
+          <div class="details">
+            <ul class="detail-list">
+              <li><strong>장점</strong><span>아바타, 장식, 업적, 주간 진행을 한 화면에 녹이기 좋습니다.</span></li>
+              <li><strong>강점 화면</strong><span>장기 성장, 스티커, 아바타 업그레이드</span></li>
+              <li><strong>주의점</strong><span>아이에게는 다소 정보량이 많아 단순화가 필요합니다.</span></li>
+            </ul>
+            <button class="select-button" type="button">이 방향 선택</button>
+          </div>
+        </article>
+      </section>
+
+      <section class="decision" aria-label="추천">
+        <div>
+          <h2>최종 선택: 동화 정원</h2>
+          <p>
+            MVP는 1번 동화 정원을 기준으로 구현합니다. 기본 캐릭터는 하얀색 페르시안 고양이
+            솜이이며, 이후 퀘스트 맵의 진행 경로와 마법 온실의 아바타 업그레이드를 보조 기능으로
+            섞을 수 있습니다.
+          </p>
+        </div>
+        <div class="pill" id="selected-pill">선택됨: 동화 정원</div>
+      </section>
+    </main>
+
+    <script>
+      const concepts = [...document.querySelectorAll(".concept")];
+      const tabs = [...document.querySelectorAll(".tab")];
+      const selectedPill = document.querySelector("#selected-pill");
+      const selectionHint = document.querySelector("#selection-hint");
+
+      function selectConcept(id) {
+        const selected = document.querySelector(`#${id}`);
+        if (!selected) return;
+
+        concepts.forEach((concept) => {
+          concept.classList.toggle("is-selected", concept.id === id);
+        });
+
+        tabs.forEach((tab) => {
+          tab.classList.toggle("is-active", tab.dataset.target === id);
+        });
+
+        const name = selected.dataset.name;
+        selectedPill.textContent = `선택됨: ${name}`;
+        selectionHint.textContent = `${name} 방향을 구현 기준으로 표시했습니다.`;
+        selected.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+
+      tabs.forEach((tab) => {
+        tab.addEventListener("click", () => selectConcept(tab.dataset.target));
+      });
+
+      concepts.forEach((concept) => {
+        concept.querySelector(".select-button").addEventListener("click", () => {
+          selectConcept(concept.id);
+        });
+      });
+    </script>
+  </body>
+</html>

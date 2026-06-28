@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+
+# Framework and build outputs
+.next/
+dist/
+out/
+*.tsbuildinfo
+
+# Local environment files
+.env
+.env.local
+.env.*.local
+
+# Local QA and browser artifacts
+.chrome-profile*/
+.chrome-profile-qa/
+qa-*.png
+prototype/qa-*.png
+
+# Local package-manager cache/config
+.npm-cache/
+prototype/.npmrc
+
+# OS and editor noise
+.DS_Store
+Thumbs.db
