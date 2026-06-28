@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Star } from "@phosphor-icons/react";
 
 type Props = {
@@ -5,6 +6,7 @@ type Props = {
   rewardGoal: number;
   rewardProgress: number;
   remainingStars: number;
+  rewardRequesting: boolean;
   rewardRequested: boolean;
   onRequest: () => void;
 };
@@ -14,6 +16,7 @@ export function RewardStrip({
   rewardGoal,
   rewardProgress,
   remainingStars,
+  rewardRequesting,
   rewardRequested,
   onRequest,
 }: Props) {
@@ -21,7 +24,13 @@ export function RewardStrip({
 
   return (
     <section className="reward-strip" aria-label="보상 진행">
-      <img src="/assets/ice-cream-reward.png" alt="아이스크림 보상" />
+      <Image
+        src="/assets/ice-cream-reward.png"
+        alt="아이스크림 보상"
+        width={72}
+        height={72}
+        sizes="72px"
+      />
       <div className="reward-content">
         <div className="reward-title">
           <strong>아이스크림</strong>
@@ -34,7 +43,12 @@ export function RewardStrip({
         </div>
         <small>{unlocked ? "보상을 받을 수 있어요!" : `별 ${remainingStars}개 더 모으면 열려요.`}</small>
       </div>
-      <button className={unlocked ? "reward-action unlocked" : "reward-action"} type="button" onClick={onRequest}>
+      <button
+        className={unlocked ? "reward-action unlocked" : "reward-action"}
+        type="button"
+        disabled={rewardRequesting || rewardRequested}
+        onClick={onRequest}
+      >
         {rewardRequested ? "요청됨" : unlocked ? "요청" : "잠김"}
       </button>
     </section>

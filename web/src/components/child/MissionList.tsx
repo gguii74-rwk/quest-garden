@@ -3,10 +3,11 @@ import { statusClass, statusLabel, type Mission } from "@/lib/questGardenData";
 
 type Props = {
   missions: Mission[];
+  isMissionBusy: (missionId: string) => boolean;
   onSubmit: (missionId: string) => void;
 };
 
-export function MissionList({ missions, onSubmit }: Props) {
+export function MissionList({ missions, isMissionBusy, onSubmit }: Props) {
   return (
     <section className="mission-panel" aria-label="오늘의 미션">
       <div className="section-heading">
@@ -19,14 +20,27 @@ export function MissionList({ missions, onSubmit }: Props) {
 
       <div className="mission-list">
         {missions.map((mission) => (
-          <MissionRow key={mission.id} mission={mission} onSubmit={onSubmit} />
+          <MissionRow
+            key={mission.id}
+            mission={mission}
+            busy={isMissionBusy(mission.id)}
+            onSubmit={onSubmit}
+          />
         ))}
       </div>
     </section>
   );
 }
 
-function MissionRow({ mission, onSubmit }: { mission: Mission; onSubmit: (missionId: string) => void }) {
+function MissionRow({
+  mission,
+  busy,
+  onSubmit,
+}: {
+  mission: Mission;
+  busy: boolean;
+  onSubmit: (missionId: string) => void;
+}) {
   const Icon = mission.Icon;
 
   return (
@@ -45,7 +59,7 @@ function MissionRow({ mission, onSubmit }: { mission: Mission; onSubmit: (missio
       <button
         className="complete-button"
         type="button"
-        disabled={mission.status !== "pending"}
+        disabled={busy || mission.status !== "pending"}
         onClick={() => onSubmit(mission.id)}
       >
         {statusLabel(mission.status)}

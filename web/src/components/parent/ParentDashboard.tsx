@@ -48,7 +48,7 @@ export function ParentDashboard({ game }: Props) {
           <button
             type="button"
             onClick={game.approveAll}
-            disabled={game.pendingApprovals.length === 0}
+            disabled={game.bulkApproving || game.pendingApprovals.length === 0}
           >
             전체 승인
           </button>
@@ -70,10 +70,18 @@ export function ParentDashboard({ game }: Props) {
                   </span>
                 </div>
                 <div className="approval-actions">
-                  <button type="button" onClick={() => game.approveMission(mission.id)}>
+                  <button
+                    type="button"
+                    disabled={game.isMissionBusy(mission.id)}
+                    onClick={() => game.approveMission(mission.id)}
+                  >
                     승인
                   </button>
-                  <button type="button" onClick={() => game.rejectMission(mission.id)}>
+                  <button
+                    type="button"
+                    disabled={game.isMissionBusy(mission.id)}
+                    onClick={() => game.rejectMission(mission.id)}
+                  >
                     되돌림
                   </button>
                 </div>

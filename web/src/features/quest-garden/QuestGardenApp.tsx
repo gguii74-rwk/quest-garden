@@ -4,9 +4,14 @@ import { ChildMode } from "@/components/child/ChildMode";
 import { ParentDashboard } from "@/components/parent/ParentDashboard";
 import { CelebrationLayer } from "@/components/ui/CelebrationLayer";
 import { useQuestGardenState } from "./useQuestGardenState";
+import type { QuestGardenInitialState } from "@/lib/questGardenData";
 
-export function QuestGardenApp() {
-  const game = useQuestGardenState();
+type Props = {
+  initialState?: QuestGardenInitialState;
+};
+
+export function QuestGardenApp({ initialState }: Props) {
+  const game = useQuestGardenState(initialState);
 
   return (
     <main className="app-shell">

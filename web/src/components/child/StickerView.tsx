@@ -1,7 +1,11 @@
 import { SmileySticker } from "@phosphor-icons/react";
-import { stickers } from "@/lib/questGardenData";
+import type { StickerEntry } from "@/lib/questGardenData";
 
-export function StickerView() {
+type Props = {
+  stickers: StickerEntry[];
+};
+
+export function StickerView({ stickers }: Props) {
   return (
     <section className="feature-view">
       <div className="feature-hero">

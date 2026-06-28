@@ -7,7 +7,6 @@ import { RewardStrip } from "./RewardStrip";
 import { RewardsView } from "./RewardsView";
 import { StickerView } from "./StickerView";
 import type { ChildTab, QuestGardenState } from "@/features/quest-garden/useQuestGardenState";
-import { rewardGoal } from "@/lib/questGardenData";
 
 type Props = {
   game: QuestGardenState;
@@ -17,6 +16,7 @@ export function ChildMode({ game }: Props) {
   return (
     <section className="child-app" aria-label="아이 모드">
       <ChildTopBar
+        avatarName={game.avatarName}
         level={game.level}
         xp={game.xp}
         stars={game.stars}
@@ -35,13 +35,18 @@ export function ChildMode({ game }: Props) {
           />
           <RewardStrip
             stars={game.stars}
-            rewardGoal={rewardGoal}
+            rewardGoal={game.rewardGoal}
             rewardProgress={game.rewardProgress}
             remainingStars={game.remainingStars}
+            rewardRequesting={game.rewardRequesting}
             rewardRequested={game.rewardRequested}
             onRequest={game.requestReward}
           />
-          <MissionList missions={game.missions} onSubmit={game.submitMission} />
+          <MissionList
+            missions={game.missions}
+            onSubmit={game.submitMission}
+            isMissionBusy={game.isMissionBusy}
+          />
         </>
       )}
 
@@ -50,13 +55,20 @@ export function ChildMode({ game }: Props) {
           stars={game.stars}
           rewardProgress={game.rewardProgress}
           remainingStars={game.remainingStars}
+          rewardRequesting={game.rewardRequesting}
           rewardRequested={game.rewardRequested}
           onRequest={game.requestReward}
         />
       )}
 
-      {game.activeTab === "books" && <ReadingView />}
-      {game.activeTab === "stickers" && <StickerView />}
+      {game.activeTab === "books" && (
+        <ReadingView
+          addingBook={game.addingBook}
+          books={game.books}
+          onAddBook={game.addBook}
+        />
+      )}
+      {game.activeTab === "stickers" && <StickerView stickers={game.stickers} />}
 
       <ChildNav activeTab={game.activeTab} onChange={game.setActiveTab} />
     </section>

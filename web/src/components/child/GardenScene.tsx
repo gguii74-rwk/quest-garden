@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Flower, Sparkle, Trophy } from "@phosphor-icons/react";
 
 type Props = {
@@ -17,7 +18,14 @@ export function GardenScene({
 }: Props) {
   return (
     <section className="garden-scene" aria-label="오늘의 가든">
-      <img className="garden-background" src="/assets/storybook-garden-scene.png" alt="꽃과 나무가 자라는 밝은 동화 정원" />
+      <Image
+        className="garden-background"
+        src="/assets/storybook-garden-scene.png"
+        alt="꽃과 나무가 자라는 밝은 동화 정원"
+        fill
+        priority
+        sizes="(max-width: 900px) 100vw, 560px"
+      />
       <div className="garden-title">
         <span className="plant-icon" aria-hidden="true">
           <Flower size={24} weight="fill" />

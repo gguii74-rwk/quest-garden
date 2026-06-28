@@ -1,3 +1,4 @@
+import Image from "next/image";
 import {
   Fire,
   GearSix,
@@ -8,6 +9,7 @@ import {
 } from "@phosphor-icons/react";
 
 type Props = {
+  avatarName: string;
   level: number;
   xp: number;
   stars: number;
@@ -15,13 +17,26 @@ type Props = {
   onToggleSound: () => void;
 };
 
-export function ChildTopBar({ level, xp, stars, soundOn, onToggleSound }: Props) {
+export function ChildTopBar({
+  avatarName,
+  level,
+  xp,
+  stars,
+  soundOn,
+  onToggleSound,
+}: Props) {
   return (
     <header className="child-topbar">
       <div className="avatar-chip">
-        <img src="/assets/somi-persian-cat.png" alt="하얀색 페르시안 고양이 솜이" />
+        <Image
+          src="/assets/somi-persian-cat.png"
+          alt={`하얀색 페르시안 고양이 ${avatarName}`}
+          width={56}
+          height={56}
+          sizes="56px"
+        />
         <div>
-          <strong>솜이</strong>
+          <strong>{avatarName}</strong>
           <span>Lv. {level}</span>
         </div>
       </div>
