@@ -51,13 +51,12 @@ Vercel is configured:
 - GitHub repo: `gguii74-rwk/quest-garden`
 - Production branch: `main`
 - Production URL: `https://quest-garden.vercel.app`
-- Latest deployment URL: `https://quest-garden-m1okdn7h9-gguii74-rwks-projects.vercel.app`
-- Latest deployment status: Ready
 - Framework: `nextjs`
 - Root Directory: `web`
 - Build Command: `npm run build`
 - Install Command: `npm install`
 - Output Directory: Next.js default
+- Ignored Build Step: `git diff --quiet HEAD^ HEAD -- .`
 - Local CLI command to use on PowerShell: `vercel.cmd`
 
 Vercel env vars were added for Production, Preview, and Development:
@@ -68,6 +67,23 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY
 ```
 
 Do not print or commit env values. `web/.env.local`, root `.env.local`, and `.vercel/` are ignored.
+
+## Session Notes
+
+Key facts from the 2026-06-28 deployment setup session:
+
+- Supabase CLI was installed via npm global and works as `supabase.cmd`.
+- Supabase remote migrations were applied to `bbmukrvtvdfqlhkktxmy`.
+- Supabase advisor warnings for RLS `auth.uid()` init plans were fixed with `20260628095127_optimize_rls_auth_uid_initplan.sql`.
+- Supabase advisor now reports no warn-or-higher issues.
+- Supabase publishable key was written only to ignored env files and Vercel env vars; the key value was not printed.
+- Vercel project was created through the Vercel API and linked to GitHub.
+- Vercel env vars were registered for Production, Preview, and Development.
+- The first production deployment reached Ready, and `/`, `/login`, and `/onboarding` returned HTTP 200.
+- A docs-only follow-up commit also triggered a deployment before the ignored build step was configured.
+- To avoid future docs-only deploys, Vercel Ignored Build Step is set to `git diff --quiet HEAD^ HEAD -- .`. Because Vercel runs from root directory `web`, this skips builds when `web/` did not change.
+- Stable URL to use in docs and user-facing references: `https://quest-garden.vercel.app`.
+- Immutable deployment URLs change per deployment; get the current one with `vercel.cmd ls quest-garden --scope gguii74-rwks-projects`.
 
 ## Verification
 
@@ -102,6 +118,7 @@ This is a local Windows symlink permission issue, not a Next.js compile failure.
 
 After pushing to `main`, Vercel should create a deployment from the GitHub connection.
 This was verified after commit `9e34f10`; the production deployment became Ready and `/`, `/login`, and `/onboarding` returned HTTP 200.
+Docs-only commits should now be skipped by the ignored build step as long as `web/` is unchanged.
 
 Useful checks:
 
@@ -121,11 +138,10 @@ Prefer GitHub-triggered deployment after commit/push unless there is a reason to
 
 ## Next Work
 
-1. Confirm GitHub push triggers the first Vercel deployment.
-2. Inspect the Vercel deployment logs if the first build fails.
-3. Open the production URL and test `/`, `/login`, and `/onboarding`.
-4. Create or sign in with a test account.
-5. Run the full Supabase-backed flow:
+1. Confirm a docs-only commit is skipped by Vercel after the ignored build step setting.
+2. Open the production URL and test `/`, `/login`, and `/onboarding`.
+3. Create or sign in with a test account.
+4. Run the full Supabase-backed flow:
    - onboarding creates profile/child rows
    - home loads DB-backed child state
    - child submits a mission
@@ -133,4 +149,4 @@ Prefer GitHub-triggered deployment after commit/push unless there is a reason to
    - points/stars/XP and `point_transactions` update
    - reward request persists
    - reading entry persists
-6. Add focused integration/E2E coverage once the production URL is stable.
+5. Add focused integration/E2E coverage now that production deployment is stable.

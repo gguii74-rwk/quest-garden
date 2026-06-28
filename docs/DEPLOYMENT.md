@@ -13,6 +13,7 @@ Build Command: npm run build
 Output Directory: Next.js default
 Git Repository: gguii74-rwk/quest-garden
 Production URL: https://quest-garden.vercel.app
+Ignored Build Step: git diff --quiet HEAD^ HEAD -- .
 ```
 
 The repository root does not contain a `package.json`; the production app is in
@@ -27,6 +28,10 @@ with:
 ```powershell
 vercel.cmd pull --yes --environment preview --scope gguii74-rwks-projects
 ```
+
+The ignored build step runs from the Vercel root directory `web`. It skips
+deployments when a pushed commit does not change files under `web/`, so docs-only
+commits do not rebuild the app.
 
 ## Supabase Environment Variables
 
