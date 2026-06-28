@@ -46,6 +46,7 @@ export function useQuestGardenState(
   );
   const [rewardRequesting, setRewardRequesting] = useState(false);
   const [addingBook, setAddingBook] = useState(false);
+  const [catReactionKey, setCatReactionKey] = useState(0);
   const [busyMissionIds, setBusyMissionIds] = useState<Set<string>>(
     () => new Set(),
   );
@@ -151,6 +152,10 @@ export function useQuestGardenState(
     });
   }
 
+  function triggerCatJoy() {
+    setCatReactionKey((value) => value + 1);
+  }
+
   function markMissionSubmitted(id: string) {
     setMissions((current) =>
       current.map((mission) =>
@@ -159,6 +164,7 @@ export function useQuestGardenState(
           : mission,
       ),
     );
+    triggerCatJoy();
     setCelebration({
       title: "잘했어요!",
       body: "솜이가 부모님 확인을 기다려요.",
@@ -208,6 +214,7 @@ export function useQuestGardenState(
     setMissions(nextMissions);
     setStars((value) => value + earnedStars);
     setPoints((value) => value + earnedPoints);
+    triggerCatJoy();
     setXp((value) => {
       const next = value + earnedXp;
       if (next >= 1000) {
@@ -373,6 +380,7 @@ export function useQuestGardenState(
         },
         ...current,
       ]);
+      triggerCatJoy();
       setCelebration({
         title: "책장 추가",
         body: "새 책을 책장에 꽂았어요.",
@@ -396,6 +404,7 @@ export function useQuestGardenState(
     }
 
     setReadingBooks((current) => [result.book, ...current]);
+    triggerCatJoy();
     setCelebration({
       title: "책장 추가",
       body: "읽기 기록을 저장했어요.",
@@ -432,6 +441,7 @@ export function useQuestGardenState(
     }
 
     setRewardRequested(true);
+    triggerCatJoy();
     setCelebration({
       title: "보상 요청!",
       body: "부모님에게 아이스크림 보상을 요청했어요.",
@@ -447,6 +457,7 @@ export function useQuestGardenState(
     avatarName,
     books: readingBooks,
     bulkApproving,
+    catReactionKey,
     celebration,
     gardenMood,
     isMissionBusy,

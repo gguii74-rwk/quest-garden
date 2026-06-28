@@ -56,17 +56,19 @@ Quest Garden은 현재 Supabase Auth/DB 기반 핵심 루프가 코드로 연결
 - SSR HTML에 `오늘의 미션`, `아이스크림` 포함 및 error overlay marker 없음 확인
 - `cd web; npm.cmd run start`로 production 서버 기동 후 `/`, `/login`, `/onboarding`: HTTP 200 확인
 - production SSR HTML에 `오늘의 미션`, `아이스크림` 포함 및 error overlay marker 없음 확인
+- 2026-06-28 현행화 확인: `npm.cmd run lint`, `npm.cmd run test:offline`, `npm.cmd run build` 재통과
+- 2026-06-28 UI 확인: `http://127.0.0.1:3001`에서 홈 desktop/mobile 렌더링, favicon 404 없음, 고양이 이미지 로드 및 미션 완료 반응 확인
 
 현재 제한:
 
-- `web/.env.local`이 없어 실제 Supabase 프로젝트에 migration 적용, 가입/온보딩 저장, 새로고침 지속성, RLS advisor 검증은 아직 수행하지 못했다.
+- 실제 Supabase 프로젝트에 migration 적용, 가입/온보딩 저장, 새로고침 지속성, RLS advisor 검증은 아직 수행하지 못했다. `.env.local` 존재 여부와 무관하게 유효한 프로젝트 연결 후 별도 E2E가 필요하다.
 - 로컬 Supabase 대체 검증도 시도했지만 Docker CLI가 설치되어 있지 않아 `supabase start`를 실행할 수 없었다.
 
 ## 추적 보드
 
 | 영역 | 상태 | 다음 액션 |
 | --- | --- | --- |
-| Mock UX | 완료 | 실제 DB 데이터로 단계적 교체 |
+| Mock UX | 완료 | Supabase 미설정/오류 fallback으로 유지 |
 | Supabase 패키지 | 완료 | 버전 유지, lockfile 커밋 |
 | Supabase 클라이언트 | 완료 | 타입 범위 확장 필요 시 보강 |
 | Auth 화면 | 1차 완료 | 이메일 확인, 오류 메시지 UX 다듬기 |
@@ -229,9 +231,9 @@ Quest Garden은 현재 Supabase Auth/DB 기반 핵심 루프가 코드로 연결
 - 신규 가입부터 미션 승인까지 브라우저에서 end-to-end 확인
 - 신규 가입부터 미션 승인까지의 실제 Supabase E2E는 `.env.local` 준비 후 수행
 
-## 현재 변경 파일
+## 최근 주요 변경 파일
 
-현재 작업 세션에서 주요 변경이 생긴 파일:
+최근 구현 범위에서 주요 변경이 생긴 파일:
 
 - `web/src/lib/supabase/*`
 - `web/src/proxy.ts`
@@ -298,5 +300,5 @@ http://127.0.0.1:3000/onboarding
 - `web/.env.local`이 없으면 Supabase action은 동작하지 않으며, 화면은 mock 모드 안내를 보여준다.
 - Supabase CLI가 로컬에 전역 설치되어 있지 않아 `npx.cmd supabase ...`를 사용했다.
 - 새 Supabase 프로젝트는 public table이 Data API에 자동 노출되지 않을 수 있다. 테이블 접근이 실패하면 API 노출 설정과 role grant를 확인한다.
-- 현재 홈 화면 데이터는 아직 mock state다. Auth와 온보딩 기반만 붙은 상태다.
+- 홈 화면 DB loader는 구현되어 있다. Supabase 환경변수가 없거나 인증/DB 조회에 실패하면 mock state로 fallback한다.
 - `HANDOFF.md`는 콘솔 출력에서 한글이 깨져 보이므로, 수정 전 에디터에서 인코딩을 확인한다.

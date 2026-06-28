@@ -55,7 +55,7 @@ npm.cmd run build
 
 `test:offline`은 migration과 Server Action의 핵심 불변식을 DB 연결 없이 확인합니다. 현재 `web/.env.local`이 없으면 실제 Supabase 저장 흐름은 검증할 수 없고 mock fallback으로 렌더링됩니다.
 
-## 다음 구현 순서
+## 다음 검증 및 구현 순서
 
 1. 실제 Supabase 프로젝트에 migration 적용
 2. `.env.local` 연결 후 가입, 온보딩, 미션 제출, 승인 E2E 검증

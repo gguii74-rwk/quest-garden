@@ -3,6 +3,9 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Quest Garden",
+  icons: {
+    icon: "/assets/somi-persian-cat.png",
+  },
   description: "숙제와 독서를 정원 성장 게임처럼 즐기는 아이용 미션 앱",
 };
 

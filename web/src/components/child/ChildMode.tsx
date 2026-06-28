@@ -27,6 +27,8 @@ export function ChildMode({ game }: Props) {
       {game.activeTab === "today" && (
         <>
           <GardenScene
+            avatarName={game.avatarName}
+            catReactionKey={game.catReactionKey}
             progressPercent={game.progressPercent}
             approvedCount={game.approvedCount}
             missionCount={game.missions.length}
