@@ -14,6 +14,13 @@ type Props = {
 };
 
 export function ParentDashboard({ game }: Props) {
+  function handleFocusChildMode() {
+    game.focusChildMode();
+    document
+      .querySelector(".child-app")
+      ?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
   return (
     <aside className="parent-panel" aria-label="부모 대시보드">
       <div className="parent-header">
@@ -21,9 +28,9 @@ export function ParentDashboard({ game }: Props) {
           <span>부모 대시보드</span>
           <h2>1분 관리</h2>
         </div>
-        <button className="mode-switch" type="button">
+        <button className="mode-switch" type="button" onClick={handleFocusChildMode}>
           <UserSwitch size={22} weight="duotone" />
-          아이 모드
+          아이 모드 보기
         </button>
       </div>
 
@@ -49,8 +56,9 @@ export function ParentDashboard({ game }: Props) {
             type="button"
             onClick={game.approveAll}
             disabled={game.bulkApproving || game.pendingApprovals.length === 0}
+            aria-busy={game.bulkApproving}
           >
-            전체 승인
+            {game.bulkApproving ? "승인 중" : "전체 승인"}
           </button>
         </div>
 
@@ -62,7 +70,10 @@ export function ParentDashboard({ game }: Props) {
         ) : (
           <div className="approval-list">
             {game.pendingApprovals.map((mission) => (
-              <div className="approval-row" key={mission.id}>
+              <div
+                className={`approval-row ${game.isMissionBusy(mission.id) ? "is-busy" : ""}`}
+                key={mission.id}
+              >
                 <div>
                   <strong>{mission.title}</strong>
                   <span>
@@ -73,16 +84,18 @@ export function ParentDashboard({ game }: Props) {
                   <button
                     type="button"
                     disabled={game.isMissionBusy(mission.id)}
+                    aria-busy={game.isMissionBusy(mission.id)}
                     onClick={() => game.approveMission(mission.id)}
                   >
-                    승인
+                    {game.isMissionBusy(mission.id) ? "처리 중" : "승인"}
                   </button>
                   <button
                     type="button"
                     disabled={game.isMissionBusy(mission.id)}
+                    aria-busy={game.isMissionBusy(mission.id)}
                     onClick={() => game.rejectMission(mission.id)}
                   >
-                    되돌림
+                    {game.isMissionBusy(mission.id) ? "처리 중" : "되돌림"}
                   </button>
                 </div>
               </div>
@@ -93,9 +106,14 @@ export function ParentDashboard({ game }: Props) {
 
       <section className="quick-actions">
         <h3>빠른 작업</h3>
-        <button type="button" onClick={game.addPianoMission}>
+        <button
+          type="button"
+          disabled={game.addingPiano}
+          aria-busy={game.addingPiano}
+          onClick={game.addPianoMission}
+        >
           <Plus size={22} weight="bold" />
-          피아노 미션 추가
+          {game.addingPiano ? "피아노 추가 중" : "피아노 미션 추가"}
         </button>
         <button type="button" onClick={game.resetDay}>
           <CalendarCheck size={22} weight="duotone" />

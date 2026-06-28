@@ -44,7 +44,7 @@ function MissionRow({
   const Icon = mission.Icon;
 
   return (
-    <article className={`mission-row ${statusClass(mission.status)}`}>
+    <article className={`mission-row ${statusClass(mission.status)} ${busy ? "is-busy" : ""}`}>
       <div className={`mission-icon ${mission.tone}`}>
         <Icon size={38} weight="duotone" />
       </div>
@@ -60,9 +60,10 @@ function MissionRow({
         className="complete-button"
         type="button"
         disabled={busy || mission.status !== "pending"}
+        aria-busy={busy}
         onClick={() => onSubmit(mission.id)}
       >
-        {statusLabel(mission.status)}
+        {busy ? "저장 중" : statusLabel(mission.status)}
       </button>
     </article>
   );

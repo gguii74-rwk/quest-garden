@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import {
+  addPianoMissionForToday,
   approveSubmittedMissions,
   rejectMissionSubmission,
   submitMissionForApproval,
@@ -46,6 +47,7 @@ export function useQuestGardenState(
   );
   const [rewardRequesting, setRewardRequesting] = useState(false);
   const [addingBook, setAddingBook] = useState(false);
+  const [addingPiano, setAddingPiano] = useState(false);
   const [catReactionKey, setCatReactionKey] = useState(0);
   const [busyMissionIds, setBusyMissionIds] = useState<Set<string>>(
     () => new Set(),
@@ -154,6 +156,23 @@ export function useQuestGardenState(
 
   function triggerCatJoy() {
     setCatReactionKey((value) => value + 1);
+  }
+
+  function openSettings() {
+    setCelebration({
+      title: "설정",
+      body: "지금은 소리 켜기/끄기를 바로 사용할 수 있어요.",
+      type: "soft",
+    });
+  }
+
+  function focusChildMode() {
+    setActiveTab("today");
+    setCelebration({
+      title: "아이 모드",
+      body: "오늘의 가든과 미션 목록으로 이동했어요.",
+      type: "soft",
+    });
   }
 
   function markMissionSubmitted(id: string) {
@@ -315,17 +334,10 @@ export function useQuestGardenState(
     markMissionsApproved(result.approvedIds, true);
   }
 
-  function addPianoMission() {
-    if (isSupabaseBacked) {
-      setCelebration({
-        title: "준비 중",
-        body: "DB 미션 추가는 다음 단계에서 연결할게요.",
-        type: "soft",
-      });
-      return;
-    }
+  async function addPianoMission() {
+    if (addingPiano) return;
 
-    if (missions.some((mission) => mission.id === "piano")) {
+    if (missions.some((mission) => mission.title === pianoMission.title)) {
       setCelebration({
         title: "이미 있어요",
         body: "피아노 미션이 오늘 목록에 있어요.",
@@ -334,10 +346,41 @@ export function useQuestGardenState(
       return;
     }
 
-    setMissions((current) => [...current, pianoMission]);
+    if (!isSupabaseBacked) {
+      setMissions((current) => [...current, pianoMission]);
+      setActiveTab("today");
+      setCelebration({
+        title: "미션 추가",
+        body: "오늘 피아노 미션이 생겼어요.",
+        type: "soft",
+      });
+      return;
+    }
+
+    if (!initialState.childId) {
+      showPersistenceError("자녀 프로필을 찾지 못했습니다.");
+      return;
+    }
+
+    setAddingPiano(true);
+    const result = await addPianoMissionForToday(initialState.childId);
+    setAddingPiano(false);
+
+    if (!result.ok) {
+      showPersistenceError(result.message);
+      return;
+    }
+
+    setMissions((current) => {
+      if (current.some((mission) => mission.id === result.mission.id)) return current;
+      return [...current, missionFromSeed(result.mission)];
+    });
+    setActiveTab("today");
     setCelebration({
-      title: "미션 추가",
-      body: "오늘 피아노 미션이 생겼어요.",
+      title: result.alreadyExists ? "이미 있어요" : "미션 추가",
+      body: result.alreadyExists
+        ? "오늘 피아노 미션을 목록에 다시 보여줬어요."
+        : "오늘 피아노 미션을 저장했어요.",
       type: "soft",
     });
   }
@@ -451,6 +494,7 @@ export function useQuestGardenState(
 
   return {
     activeTab,
+    addingPiano,
     addingBook,
     addBook,
     approvedCount,
@@ -485,6 +529,8 @@ export function useQuestGardenState(
     rejectMission,
     requestReward,
     resetDay,
+    focusChildMode,
+    openSettings,
     setActiveTab,
     setCelebration,
     setRewardRequested,

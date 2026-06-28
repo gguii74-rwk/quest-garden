@@ -47,9 +47,10 @@ export function RewardStrip({
         className={unlocked ? "reward-action unlocked" : "reward-action"}
         type="button"
         disabled={rewardRequesting || rewardRequested}
+        aria-busy={rewardRequesting}
         onClick={onRequest}
       >
-        {rewardRequested ? "요청됨" : unlocked ? "요청" : "잠김"}
+        {rewardRequesting ? "요청 중" : rewardRequested ? "요청됨" : unlocked ? "요청" : "잠김"}
       </button>
     </section>
   );

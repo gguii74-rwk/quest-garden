@@ -21,6 +21,7 @@ export function ChildMode({ game }: Props) {
         xp={game.xp}
         stars={game.stars}
         soundOn={game.soundOn}
+        onOpenSettings={game.openSettings}
         onToggleSound={() => game.setSoundOn((value) => !value)}
       />
 

@@ -46,6 +46,16 @@ body {
 
 button {
   font: inherit;
+  transition:
+    transform 140ms ease,
+    box-shadow 140ms ease,
+    background 140ms ease,
+    border-color 140ms ease,
+    opacity 140ms ease;
+}
+
+button:not(:disabled):active {
+  transform: translateY(1px);
 }
 
 button:focus-visible {
@@ -170,6 +180,12 @@ button:focus-visible {
   place-items: center;
   color: #8a765f;
   cursor: pointer;
+}
+
+.icon-button:hover {
+  border-color: #d8b56f;
+  color: var(--green-dark);
+  background: #fffaf0;
 }
 
 .garden-scene {
@@ -461,10 +477,32 @@ button:focus-visible {
   cursor: pointer;
 }
 
+.reward-action:not(.unlocked) {
+  border-style: dashed;
+}
+
 .reward-action.unlocked {
   border-color: #dfa117;
   background: var(--yellow);
   color: #5a3700;
+}
+
+.reward-action:disabled,
+.reward-card-large button:disabled,
+.wide-action:disabled {
+  background: #e8dcc7;
+  color: #8d7a61;
+  cursor: default;
+}
+
+.complete-button[aria-busy="true"],
+.reward-action[aria-busy="true"],
+.reward-card-large button[aria-busy="true"],
+.wide-action[aria-busy="true"],
+.box-heading button[aria-busy="true"],
+.approval-actions button[aria-busy="true"],
+.quick-actions button[aria-busy="true"] {
+  cursor: wait;
 }
 
 .mission-panel,
@@ -528,6 +566,13 @@ button:focus-visible {
 
 .mission-row.submitted {
   background: rgba(255, 246, 220, 0.74);
+}
+
+.mission-row.is-busy,
+.approval-row.is-busy {
+  border-color: #dfa117;
+  background: #fff5db;
+  box-shadow: inset 0 0 0 2px rgba(223, 161, 23, 0.18);
 }
 
 .mission-icon {
@@ -975,6 +1020,12 @@ button:focus-visible {
   cursor: pointer;
 }
 
+.approval-actions button:disabled {
+  background: #e8dcc7;
+  color: #8d7a61;
+  cursor: default;
+}
+
 .approval-actions button:last-child {
   background: #e8dcc7;
   color: #684d2d;
@@ -988,6 +1039,12 @@ button:focus-visible {
 .quick-actions button {
   width: 100%;
   min-height: 48px;
+}
+
+.quick-actions button:disabled {
+  background: #e8dcc7;
+  color: #8d7a61;
+  cursor: default;
 }
 
 .reward-request {

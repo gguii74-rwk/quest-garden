@@ -37,10 +37,11 @@ export function ReadingView({ addingBook, books, onAddBook }: Props) {
         className="wide-action"
         type="button"
         disabled={addingBook}
+        aria-busy={addingBook}
         onClick={onAddBook}
       >
         <Plus size={24} weight="bold" />
-        책 1권 추가
+        {addingBook ? "추가 중" : "책 1권 추가"}
       </button>
     </section>
   );

@@ -46,9 +46,16 @@ export function RewardsView({
         <button
           type="button"
           disabled={rewardRequesting || rewardRequested}
+          aria-busy={rewardRequesting}
           onClick={onRequest}
         >
-          {rewardRequested ? "요청됨" : remainingStars === 0 ? "받고 싶어요" : "조금 더"}
+          {rewardRequesting
+            ? "요청 중"
+            : rewardRequested
+              ? "요청됨"
+              : remainingStars === 0
+                ? "받고 싶어요"
+                : "조금 더"}
         </button>
       </div>
     </section>

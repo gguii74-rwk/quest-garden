@@ -14,6 +14,7 @@ type Props = {
   xp: number;
   stars: number;
   soundOn: boolean;
+  onOpenSettings: () => void;
   onToggleSound: () => void;
 };
 
@@ -23,6 +24,7 @@ export function ChildTopBar({
   xp,
   stars,
   soundOn,
+  onOpenSettings,
   onToggleSound,
 }: Props) {
   return (
@@ -59,11 +61,23 @@ export function ChildTopBar({
         <strong>7일 연속!</strong>
       </div>
 
-      <button className="icon-button" type="button" aria-label="설정">
+      <button
+        className="icon-button"
+        type="button"
+        aria-label="설정 열기"
+        title="설정"
+        onClick={onOpenSettings}
+      >
         <GearSix size={30} weight="duotone" />
       </button>
 
-      <button className="icon-button" type="button" aria-label="소리 켜기 끄기" onClick={onToggleSound}>
+      <button
+        className="icon-button"
+        type="button"
+        aria-label={soundOn ? "소리 끄기" : "소리 켜기"}
+        title={soundOn ? "소리 끄기" : "소리 켜기"}
+        onClick={onToggleSound}
+      >
         {soundOn ? <SpeakerHigh size={30} weight="duotone" /> : <SpeakerSlash size={30} weight="duotone" />}
       </button>
     </header>

@@ -72,7 +72,13 @@ test("mission server actions only mutate expected statuses", () => {
   assert.match(source, /\.eq\("status", "submitted"\)/);
   assert.match(source, /status: "pending"/);
 
-  assert.equal((source.match(/revalidatePath\("\/"\)/g) ?? []).length, 3);
+  assert.match(source, /addPianoMissionForToday/);
+  assert.match(source, /\.from\("children"\)/);
+  assert.match(source, /findPianoMissionInstance/);
+  assert.match(source, /\.from\("mission_instances"\)/);
+  assert.match(source, /title_snapshot: pianoMissionSeed\.title/);
+
+  assert.equal((source.match(/revalidatePath\("\/"\)/g) ?? []).length, 4);
 });
 
 test("reward server action checks unlock and duplicate request guards", () => {
