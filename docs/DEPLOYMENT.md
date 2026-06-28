@@ -12,6 +12,7 @@ Install Command: npm install
 Build Command: npm run build
 Output Directory: Next.js default
 Git Repository: gguii74-rwk/quest-garden
+Production URL: https://quest-garden.vercel.app
 ```
 
 The repository root does not contain a `package.json`; the production app is in

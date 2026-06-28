@@ -50,6 +50,9 @@ Vercel is configured:
 - Scope/project: `gguii74-rwks-projects/quest-garden`
 - GitHub repo: `gguii74-rwk/quest-garden`
 - Production branch: `main`
+- Production URL: `https://quest-garden.vercel.app`
+- Latest deployment URL: `https://quest-garden-m1okdn7h9-gguii74-rwks-projects.vercel.app`
+- Latest deployment status: Ready
 - Framework: `nextjs`
 - Root Directory: `web`
 - Build Command: `npm run build`
@@ -98,6 +101,7 @@ This is a local Windows symlink permission issue, not a Next.js compile failure.
 ## Deployment Flow
 
 After pushing to `main`, Vercel should create a deployment from the GitHub connection.
+This was verified after commit `9e34f10`; the production deployment became Ready and `/`, `/login`, and `/onboarding` returned HTTP 200.
 
 Useful checks:
 
