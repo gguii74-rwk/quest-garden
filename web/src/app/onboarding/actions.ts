@@ -82,6 +82,15 @@ function redirectToOnboarding(message: string): never {
   redirect(onboardingPath(message));
 }
 
+function loginPath(message: string) {
+  const params = new URLSearchParams({ message });
+  return `/login?${params.toString()}`;
+}
+
+function redirectToLogin(message: string): never {
+  redirect(loginPath(message));
+}
+
 function todayInSeoul() {
   return new Intl.DateTimeFormat("en-CA", {
     day: "2-digit",
@@ -103,7 +112,7 @@ export async function createFirstChild(formData: FormData) {
   } = await supabase.auth.getUser();
 
   if (userError || !user) {
-    redirect("/login?message=로그인이 필요합니다.");
+    redirectToLogin("로그인이 필요합니다.");
   }
 
   const { data: existingChild, error: existingChildError } = await supabase

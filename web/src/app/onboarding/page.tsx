@@ -13,6 +13,11 @@ type OnboardingPageProps = {
   }>;
 };
 
+function loginPath(message: string) {
+  const params = new URLSearchParams({ message });
+  return `/login?${params.toString()}`;
+}
+
 export default async function OnboardingPage({
   searchParams,
 }: OnboardingPageProps) {
@@ -21,7 +26,7 @@ export default async function OnboardingPage({
   let existingChildName: string | null = null;
 
   if (configured && !user) {
-    redirect("/login?message=로그인이 필요합니다.");
+    redirect(loginPath("로그인이 필요합니다."));
   }
 
   if (configured && user) {
