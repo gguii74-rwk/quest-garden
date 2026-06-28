@@ -46,3 +46,11 @@ There is no existing Git history to derive conventions from. Use concise imperat
 ## Security & Configuration Tips
 
 Copy `web/.env.example` to `web/.env.local` for local secrets. Do not commit `.env*`, `node_modules/`, `.next/`, `dist/`, QA browser profiles, or generated screenshots unless they are intentional documentation artifacts.
+
+## Agent Operational Notes
+
+- This workspace runs PowerShell on Windows. Prefer `npm.cmd` over `npm`; direct `npm` calls can fail because PowerShell blocks `npm.ps1` under the current execution policy.
+- `git status` may warn that `C:\Users\gguii\.config\git\ignore` is not accessible. This warning has not blocked commits or pushes.
+- The Git remote is `origin` at `https://github.com/gguii74-rwk/quest-garden.git`; local `main` tracks `origin/main`.
+- Supabase and Vercel plugin files exist in the Codex plugin cache, but their runtime tools were not exposed in this session after activation attempts.
+- Supabase npm packages may already be installed in `web/` (`@supabase/ssr`, `@supabase/supabase-js`) as part of the next development step.
